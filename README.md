@@ -11,3 +11,20 @@
 
 ## Johdanto
 TODO
+
+
+## React Native
+TODO
+
+
+## Flutter
+TODO
+
+
+## Vertailu
+TODO
+
+
+## Lähteet
+React native documentation: (https://reactnative.dev/)[https://reactnative.dev/] 
+Flutter documentation: (https://flutter.dev/)[https://flutter.dev/]

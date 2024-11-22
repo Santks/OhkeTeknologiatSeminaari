@@ -1,5 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
+import 'dart:async';
+import 'dart:convert';
+
+int nextId = 1;
+
+// generate id for pokemon
+int generateId() {
+  final int uniqueId = nextId;
+  nextId++;
+  return uniqueId;
+}
+
+// pokemon class
+class Pokemon {
+  final int id;
+  final String name;
+  final String pkmnLink;
+
+  const Pokemon({required this.id, required this.name, required this.pkmnLink});
+
+  factory Pokemon.fromJson(Map<String, dynamic> json) {
+    return Pokemon(
+      id: generateId(),
+      name: json['name'] as String,
+      pkmnLink: json['url'] as String,
+    );
+  }
+}
+
+// fetch all pokemon from api
+Future<List<Pokemon>> fetchPokemon() async {
+  final response = await http
+      .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?limit=1302'));
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body)
+        as Map<String, dynamic>; //Decode json data to a dart map object
+    final results = data['results']
+        as List<dynamic>; //Get results array from dart map object
+    return results
+        .map((json) => Pokemon.fromJson(json as Map<String, dynamic>))
+        .toList(); //Map json objects from the list to pokemon objects and return all of them in a list
+  } else {
+    throw Exception('Failed to load pokemon list.');
+  }
+}
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +59,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AppState(),
+      create: (context) => AppState()
+        ..loadPokemonList(), // fetch pokemon data when starting the app
       child: MaterialApp(
         title: 'Pokemon info',
         theme: ThemeData(
@@ -24,7 +73,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppState extends ChangeNotifier {}
+class AppState extends ChangeNotifier {
+  List<Pokemon> _pokemonList = [];
+  bool _isLoading = true;
+
+  List<Pokemon> get pokemonList => _pokemonList;
+  bool get isLoading => _isLoading;
+
+  Future<void> loadPokemonList() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final fetched = await fetchPokemon();
+      _pokemonList.addAll(fetched);
+    } catch (err) {
+      print('error while fetching pokemon: $err');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -78,7 +147,21 @@ class _HomePageState extends State<HomePage> {
 class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Pokemon list")));
+    var appState = context.watch<AppState>();
+    return Scaffold(
+        appBar: AppBar(title: Text("Pokemon list")),
+        body: appState.isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  final pokemon = appState.pokemonList[index];
+                  return ListTile(
+                    title: Text('${pokemon.id}  ${pokemon.name}'),
+                  );
+                },
+              ));
   }
 }
 
