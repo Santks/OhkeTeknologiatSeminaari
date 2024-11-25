@@ -1,53 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-
 import 'dart:async';
-import 'dart:convert';
 
-int nextId = 1;
+// ignore: unused_import
+import 'package:firebase_auth/firebase_auth.dart';
 
-// generate id for pokemon
-int generateId() {
-  final int uniqueId = nextId;
-  nextId++;
-  return uniqueId;
-}
+//Utility class imports
+import 'package:pokemon_info_mobile/utils/pokemon.dart';
+import 'package:pokemon_info_mobile/utils/pokemon_data.dart';
 
-// pokemon class
-class Pokemon {
-  final int id;
-  final String name;
-  final String pkmnLink;
+//Dialog imports
+import 'package:pokemon_info_mobile/dialogs/login_dialog.dart';
+import 'package:pokemon_info_mobile/dialogs/register_dialog.dart';
 
-  const Pokemon({required this.id, required this.name, required this.pkmnLink});
-
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
-    return Pokemon(
-      id: generateId(),
-      name: json['name'] as String,
-      pkmnLink: json['url'] as String,
-    );
-  }
-}
-
-// fetch all pokemon from api
-Future<List<Pokemon>> fetchPokemon() async {
-  final response = await http
-      .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?limit=1302'));
-
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body)
-        as Map<String, dynamic>; //Decode json data to a dart map object
-    final results = data['results']
-        as List<dynamic>; //Get results array from dart map object
-    return results
-        .map((json) => Pokemon.fromJson(json as Map<String, dynamic>))
-        .toList(); //Map json objects from the list to pokemon objects and return all of them in a list
-  } else {
-    throw Exception('Failed to load pokemon list.');
-  }
-}
+// Page imports
+import 'package:pokemon_info_mobile/pages/list_page.dart';
+import 'package:pokemon_info_mobile/pages/favorites.dart';
+import 'package:pokemon_info_mobile/pages/settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,20 +43,41 @@ class MyApp extends StatelessWidget {
 }
 
 class AppState extends ChangeNotifier {
-  List<Pokemon> _pokemonList = [];
-  bool _isLoading = true;
+  List<Pokemon> _pokemonList = []; //private list that holds all pokemon
+  PokemonData?
+      _pokemonData; //private object that holds data of one pokemon and can be null
+  bool _isLoading = false;
 
-  List<Pokemon> get pokemonList => _pokemonList;
+  List<Pokemon> get pokemonList =>
+      _pokemonList; //getter that returns list of all pokemon
+  PokemonData? get pokemonData =>
+      _pokemonData; //getter that returns data of one pokemon or null
   bool get isLoading => _isLoading;
+
+  Future<void> loadPokemonData(int pkmnId) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final fetched =
+          await fetchPokemonData(pkmnId); //fetch pokemon data from api
+      _pokemonData = fetched; //set fetched data to pokemonData object
+    } catch (err) {
+      print('Error while fetching pokemon data: $err');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   Future<void> loadPokemonList() async {
     try {
       _isLoading = true;
       notifyListeners();
-      final fetched = await fetchPokemon();
-      _pokemonList.addAll(fetched);
+      final fetched = await fetchPokemon(); //fetch all pokemon from api
+      _pokemonList
+          .addAll(fetched); //add the fetched pokemon to the pokemon list
     } catch (err) {
-      print('error while fetching pokemon: $err');
+      print('error while fetching list of pokemon: $err');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -135,46 +125,16 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: <Widget>[
-        Scaffold(appBar: AppBar(title: Text("Pokemon info"))),
+        Scaffold(
+          appBar: AppBar(title: Text("Pokemon info")),
+          body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [LoginDialog(), RegisterDialog()]),
+        ),
         ListPage(),
         FavoritesPage(),
         SettingsPage(),
       ][selectedIndex],
     );
-  }
-}
-
-class ListPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
-    return Scaffold(
-        appBar: AppBar(title: Text("Pokemon list")),
-        body: appState.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemBuilder: (context, index) {
-                  final pokemon = appState.pokemonList[index];
-                  return ListTile(
-                    title: Text('${pokemon.id}  ${pokemon.name}'),
-                  );
-                },
-              ));
-  }
-}
-
-class FavoritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("List of favourites")));
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Settings")));
   }
 }
