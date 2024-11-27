@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 
-// ignore: unused_import
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 //Utility class imports
 import 'package:pokemon_info_mobile/utils/pokemon.dart';
@@ -18,7 +18,11 @@ import 'package:pokemon_info_mobile/pages/list_page.dart';
 import 'package:pokemon_info_mobile/pages/favorites.dart';
 import 'package:pokemon_info_mobile/pages/settings.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -128,8 +132,13 @@ class _HomePageState extends State<HomePage> {
         Scaffold(
           appBar: AppBar(title: Text("Pokemon info")),
           body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [LoginDialog(), RegisterDialog()]),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoginDialog(),
+              Text("Don't have an account? Create one now!"),
+              RegisterDialog()
+            ],
+          ),
         ),
         ListPage(),
         FavoritesPage(),

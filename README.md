@@ -26,10 +26,11 @@ TODO
 
 
 ## Vertailu
-TODO
+- firebase config oli syvältä molemmissa
 
 
 ## Lähteet
 - React native documentation: [https://reactnative.dev/](https://reactnative.dev/) 
 - Flutter documentation: [https://flutter.dev/](https://flutter.dev/)
 - Geeks for Geeks Flutter API tutorial: [https://www.geeksforgeeks.org/flutter-fetch-data-from-rest-apis/](https://www.geeksforgeeks.org/flutter-fetch-data-from-rest-apis/)
+- Firebase documentation: [https://firebase.google.com/docs](https://firebase.google.com/docs)

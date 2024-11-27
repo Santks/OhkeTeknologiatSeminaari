@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:pokemon_info_mobile/dialogs/login_success_dialog.dart';
+
+logUserIn(BuildContext context, email, password) async {
+  try {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    if (credential.user != null && context.mounted) {
+      Navigator.of(context).pop();
+      LoginSuccessDialog.show(context, email);
+    }
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('no account found with that email');
+    } else if (e.code == 'wrong-password') {
+      print('wrong password provided');
+    }
+  } catch (e) {
+    print('error: $e');
+  }
+}
 
 class LoginDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var email = "";
+    var password = "";
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -22,6 +46,7 @@ class LoginDialog extends StatelessWidget {
                                 decoration: InputDecoration(
                                     border: UnderlineInputBorder(),
                                     labelText: "Email..."),
+                                onChanged: (value) => email = value,
                               ),
                               SizedBox(height: 15),
                               TextFormField(
@@ -32,6 +57,7 @@ class LoginDialog extends StatelessWidget {
                                   border: UnderlineInputBorder(),
                                   labelText: "Password...",
                                 ),
+                                onChanged: (value) => password = value,
                               ),
                               TextButton(
                                 onPressed: () {
@@ -40,7 +66,8 @@ class LoginDialog extends StatelessWidget {
                                 child: const Text('Close'),
                               ),
                               TextButton(
-                                  onPressed: () => print("button pressed"),
+                                  onPressed: () =>
+                                      logUserIn(context, email, password),
                                   child: Text("Log in"))
                             ],
                           ),
