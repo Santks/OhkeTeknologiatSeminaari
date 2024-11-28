@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -8,6 +9,7 @@ import 'firebase_options.dart';
 //Utility class imports
 import 'package:pokemon_info_mobile/utils/pokemon.dart';
 import 'package:pokemon_info_mobile/utils/pokemon_data.dart';
+import 'package:pokemon_info_mobile/utils/favorites.dart';
 
 //Dialog imports
 import 'package:pokemon_info_mobile/dialogs/login_dialog.dart';
@@ -15,7 +17,7 @@ import 'package:pokemon_info_mobile/dialogs/register_dialog.dart';
 
 // Page imports
 import 'package:pokemon_info_mobile/pages/list_page.dart';
-import 'package:pokemon_info_mobile/pages/favorites.dart';
+import 'package:pokemon_info_mobile/pages/favorite_list.dart';
 import 'package:pokemon_info_mobile/pages/settings.dart';
 
 void main() async {
@@ -51,11 +53,14 @@ class AppState extends ChangeNotifier {
   PokemonData?
       _pokemonData; //private object that holds data of one pokemon and can be null
   bool _isLoading = false;
+  List<FavPokemon> _favList = []; //private list that holds favorite pokemon
 
   List<Pokemon> get pokemonList =>
       _pokemonList; //getter that returns list of all pokemon
   PokemonData? get pokemonData =>
       _pokemonData; //getter that returns data of one pokemon or null
+  List<FavPokemon> get favList =>
+      _favList; //getter that returns list  of favorite pokemon
   bool get isLoading => _isLoading;
 
   Future<void> loadPokemonData(int pkmnId) async {
@@ -86,6 +91,32 @@ class AppState extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadFavorites() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      try {
+        _isLoading = true;
+        final fetched =
+            await fetchFavorites(); //Fetch users favorites from the database
+        for (var favorite in fetched) {
+          //If a favorite is in the database twice don't add it to the UI favorite list again (lazy solution)
+          if (!_favList.any((duplicate) => duplicate.id == favorite.id)) {
+            _favList.add(favorite);
+          }
+        }
+      } catch (err) {
+        print("error while fetching favorites $err");
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  void removeFavoriteById(id) {
+    _favList.removeWhere((favorite) => favorite.id == id);
+    notifyListeners();
   }
 }
 

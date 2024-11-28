@@ -22,7 +22,7 @@ class Pokemon {
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     return Pokemon(
-      id: generateId(), // Generate id for pokemon list page, actual id for data page
+      id: generateId(),
       name: json['name'] as String,
       pkmnLink: json['url'] as String,
     );

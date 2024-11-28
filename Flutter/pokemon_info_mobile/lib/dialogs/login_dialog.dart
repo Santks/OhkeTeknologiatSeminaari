@@ -31,48 +31,64 @@ class LoginDialog extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ElevatedButton(
-              onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                        child: Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text("Log in to pokemon info."),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: "Email..."),
-                                onChanged: (value) => email = value,
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                obscureText: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: "Password...",
-                                ),
-                                onChanged: (value) => password = value,
-                              ),
+              onPressed: () => FirebaseAuth.instance.currentUser != null
+                  ? showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            title: Text('Already logged in!'),
+                            content: Text(
+                                'Log out in the settings page before trying to log into another account.'),
+                            actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(context).pop();
                                 },
-                                child: const Text('Close'),
+                                child: Text('OK'),
                               ),
-                              TextButton(
-                                  onPressed: () =>
-                                      logUserIn(context, email, password),
-                                  child: Text("Log in"))
                             ],
-                          ),
-                        ),
-                      )),
+                          ))
+                  : showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Log in to pokemon info."),
+                                  SizedBox(height: 15),
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                        border: UnderlineInputBorder(),
+                                        labelText: "Email..."),
+                                    onChanged: (value) => email = value,
+                                  ),
+                                  SizedBox(height: 15),
+                                  TextFormField(
+                                    obscureText: true,
+                                    autocorrect: false,
+                                    enableSuggestions: false,
+                                    decoration: InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: "Password...",
+                                    ),
+                                    onChanged: (value) => password = value,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Close'),
+                                  ),
+                                  TextButton(
+                                      onPressed: () =>
+                                          logUserIn(context, email, password),
+                                      child: Text("Log in"))
+                                ],
+                              ),
+                            ),
+                          )),
               child: const Text("Open Login Dialog")),
         ]);
   }

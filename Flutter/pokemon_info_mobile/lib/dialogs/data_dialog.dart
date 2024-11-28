@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pokemon_info_mobile/main.dart';
+import 'package:pokemon_info_mobile/pages/favorite_list.dart';
 import 'package:provider/provider.dart';
 
 class DataDialog extends StatelessWidget {
@@ -21,8 +22,8 @@ class DataDialog extends StatelessWidget {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Pokemon: ${pokemonData.name}'),
-                      Text('ID: ${pokemonData.id}'),
+                      Text('Pokemon: ${nameFormat(pokemonData.name)}'),
+                      Text('National Pokedex number: ${pokemonData.id}'),
                       Text('Weight ${pokemonData.weight / 10}kg'),
                       Text('Weight ${pokemonData.height / 10}m'),
                       Text("Abilities: "),

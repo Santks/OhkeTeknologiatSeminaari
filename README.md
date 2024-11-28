@@ -10,11 +10,11 @@
 
 
 ## Johdanto
-Tämä readme.md toimii seminaarityön raporttina (En jaksanut turhaan tehdä toista .md tiedostoa).
+Tämä readme.md toimii seminaarityön raporttina.
 
-Seminaarityön tavoitteena on tutustua Googlen kehittämään SDK-ohjelmistoon Flutteriin ja tehdä mobiiliohjelmointi -kurssin lopputyö Flutterilla ja sitten vertailla sitä React Nativeen, jolla alkuperäinen sovellus on tehty. 
+Seminaarityön tavoitteena on tutustua Googlen kehittämään SDK Flutteriin ja tehdä mobiiliohjelmointi -kurssin lopputyö Flutterilla ja sitten vertailla sitä React Nativeen, jolla alkuperäinen sovellus on tehty. 
 
-Raportoin myös molempien kehitystyökalujen kehityskokemuksesta ja esittelen molempien hyötyjä sekä haittoja. Molempien sovelluksien lähdekoodi löytyy tästä repositoriosta ja raportissa on kuvia sovelluksien käyttöliittymistä.
+Raportoin myös molempien kehitystyökalujen kehityskokemuksesta ja esittelen molempien hyötyjä sekä haittoja. Molempien sovelluksien lähdekoodi löytyy tästä repositoriosta ja raportissa on kuvia sovelluksien käyttöliittymistä sekä lähdekoodeista.
 
 
 ## React Native
@@ -27,6 +27,8 @@ TODO
 
 ## Vertailu
 - firebase config oli syvältä molemmissa
+- React native sdk toimii paremmin firebasen kanssa
+- Json datan käyttäminen monimutkaisempaa flutterilla/dartilla
 
 
 ## Lähteet
