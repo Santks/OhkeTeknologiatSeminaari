@@ -247,8 +247,11 @@ JSON-datan k채sittely oli paljon helpompaa React Nativessa kuin Flutterissa. My�
 <details>
 <summary><strong>React Native JSON k채sittely</strong></summary>
 
+#### API haku
 ![Fetch data API](/images/RN_fetch.png)
-![Fetch data DB](/images/flutter_fetchDB.png)
+
+#### Tietokantahaku
+![Fetch data DB](/images/RN_fetchDB.png)
 
 </details>
 
@@ -257,10 +260,19 @@ Flutterissa dataa haettaessa ensin pit채채 luoda luokka, joka m채채rittelee haet
 <details>
 <summary><strong>Flutter/Dart JSON k채sittely</strong></summary>
 
+#### Pokemon luokka
 ![Data structure class](/images/Flutter_class.png)
+
+#### API halu
 ![Fetch data API](/images/flutter_fetch.png)
+
+#### Appstate, josta sovellus saa listan
 ![Fetch data DB](/images/flutter_appstate.png)
+
+#### Favorite pokemon luokka
 ![DB Data structure class](/images/flutter_favClass.png)
+
+#### Tietokantahaku
 ![Fetch data DB](/images/flutter_fetchDB.png)
 
 </details>
