@@ -79,7 +79,7 @@ class LoginDialog extends StatelessWidget {
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Close'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                       onPressed: () =>
@@ -89,7 +89,7 @@ class LoginDialog extends StatelessWidget {
                               ),
                             ),
                           )),
-              child: const Text("Open Login Dialog")),
+              child: const Text("Login")),
         ]);
   }
 }

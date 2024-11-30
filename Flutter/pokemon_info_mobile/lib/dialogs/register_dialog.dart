@@ -80,7 +80,7 @@ class RegisterDialog extends StatelessWidget {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: const Text('Close'),
+                              child: const Text('Cancel'),
                             ),
                             ElevatedButton(
                                 onPressed: () => registerUser(
@@ -90,7 +90,7 @@ class RegisterDialog extends StatelessWidget {
                         ),
                       ),
                     )),
-            child: const Text("Open Register Dialog"))
+            child: const Text("Create account"))
       ],
     );
   }

@@ -87,29 +87,36 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         .length, //define list item count to avoid out of range exceptions
                     itemBuilder: (context, index) {
                       final favorite = appState.favList[index];
-                      return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(nameFormat('${favorite.name} ')),
-                            ),
-                            IconButton(
-                                onPressed: () async {
-                                  appState.loadPokemonData(favorite.id);
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        DataDialog(),
-                                  );
-                                },
-                                icon: Icon(Icons.info)),
-                            IconButton(
+                      return Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.greenAccent, width: 2.0)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(nameFormat('${favorite.name} ')),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    appState.loadPokemonData(favorite.id);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          DataDialog(),
+                                    );
+                                  },
+                                  icon: Icon(Icons.info)),
+                              IconButton(
                                 onPressed: () => deleteFavorite(
                                     context, favorite.id, favorite.key),
                                 // id needs to be passed to remove favorite from the UI
-                                icon: Icon(Icons.delete))
-                          ]);
+                                icon: Icon(Icons.delete),
+                                color: Colors.red,
+                              )
+                            ]),
+                      );
                     },
                   ));
   }

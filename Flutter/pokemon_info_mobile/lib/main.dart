@@ -115,6 +115,7 @@ class AppState extends ChangeNotifier {
   }
 
   void removeFavoriteById(id) {
+    // Remove favorite from UI list
     _favList.removeWhere((favorite) => favorite.id == id);
     notifyListeners();
   }
@@ -162,13 +163,21 @@ class _HomePageState extends State<HomePage> {
       body: <Widget>[
         Scaffold(
           appBar: AppBar(title: Text("Pokemon info")),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LoginDialog(),
-              Text("Don't have an account? Create one now!"),
-              RegisterDialog()
-            ],
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LoginDialog(),
+                SizedBox(
+                  height: 15,
+                ),
+                Text("Don't have an account? Create one now!"),
+                SizedBox(
+                  height: 10,
+                ),
+                RegisterDialog()
+              ],
+            ),
           ),
         ),
         ListPage(),
