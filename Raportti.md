@@ -70,14 +70,18 @@ Flutter käyttää Googlen kehittämää ohjelmointikieltä **Dart**:ia, joka ke
 Flutter tarjoaa myös hyvän ominaisuuden Dart DevTools:issa, jossa on mm. Widget inspector, jolla näkee yksityiskohtaisia tietoja widgeteistä ja niiden toiminnasta.
 
 Flutterilla on erittäin hyödyllinen ominaisuus refaktoroida koodia ilman, että tarvitsee itse alkaa kirjoittamaan koko osiota.
+
 <details>
 <summary><strong>Näytä kuvat</strong></summary>
+
 ![Refactor](images/flutter_refactor.png)
 ![Wrap](images/flutter_wrap.png)
+
 </details>
 
 
 Esimerkki komponenttien (widgettien) yhdistelystä HomePage-luokan widgetin body osiosta:
+
 <details>
 <summary><strong>Näytä koodipätkä</strong></summary>
 
@@ -242,18 +246,23 @@ JSON-datan käsittely oli paljon helpompaa React Nativessa kuin Flutterissa. My�
 
 <details>
 <summary><strong>React Native JSON käsittely</strong></summary>
+
 ![Fetch data API](/images/RN_fetch.png)
 ![Fetch data DB](/images/flutter_fetchDB.png)
+
 </details>
 
 Flutterissa dataa haettaessa ensin pitää luoda luokka, joka määrittelee haettavan datan rakenteen. Data haetaan verkosta HTTP-pyynnöllä (API haku, tietokantahaussa haetaan firebasen get() metodilla) ja JSON vastauksen data dekoodataan Dartin Map-olioksi. Tämän jälkeen jokainen JSON-objekti muunnetaan factory-metodilla olioksi ja sitten olioiden lista välitetään sovellukselle AppStaten kautta.
+
 <details>
 <summary><strong>Flutter/Dart JSON käsittely</strong></summary>
+
 ![Data structure class](/images/Flutter_class.png)
 ![Fetch data API](/images/flutter_fetch.png)
 ![Fetch data DB](/images/flutter_appstate.png)
 ![DB Data structure class](/images/flutter_favClass.png)
 ![Fetch data DB](/images/flutter_fetchDB.png)
+
 </details>
 
 Flutter voittaa React Nativen elementtien tyylittelyssä sekä liikuttamisessa. 
