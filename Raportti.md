@@ -263,7 +263,7 @@ Flutterissa dataa haettaessa ensin pitää luoda luokka, joka määrittelee haet
 #### Pokemon luokka
 ![Data structure class](/images/Flutter_class.png)
 
-#### API halu
+#### API haku
 ![Fetch data API](/images/flutter_fetch.png)
 
 #### Appstate, josta sovellus saa listan
