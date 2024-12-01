@@ -82,6 +82,7 @@ class DataDialog extends StatelessWidget {
                           Text(ability['is_hidden']
                               ? "${nameFormat(ability['name'])} (hidden ability)"
                               : nameFormat(ability['name'])),
+                        SizedBox(height: 10),
                         Container(
                           height: 315,
                           width: 320,
@@ -89,17 +90,60 @@ class DataDialog extends StatelessWidget {
                           child: BarChart(
                             BarChartData(
                               alignment: BarChartAlignment.spaceAround,
-                              maxY: 255,
-                              barTouchData: BarTouchData(enabled: false),
+                              maxY: 250,
+                              barTouchData: BarTouchData(
+                                enabled: false,
+                                touchTooltipData: BarTouchTooltipData(
+                                  tooltipMargin: 0,
+                                  tooltipPadding: EdgeInsets.all(0),
+                                  tooltipBorder: BorderSide(
+                                      color: Colors.white,
+                                      style: BorderStyle.none),
+                                  getTooltipItem:
+                                      (group, groupIndex, rod, rodIndex) {
+                                    return BarTooltipItem(
+                                        rod.toY.toStringAsFixed(0),
+                                        TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            backgroundColor: Colors.white));
+                                  },
+                                ),
+                              ),
                               titlesData: FlTitlesData(
                                 bottomTitles: AxisTitles(
                                   sideTitles: SideTitles(
                                     showTitles: true,
                                     reservedSize: 25,
+                                    getTitlesWidget:
+                                        (double value, TitleMeta meta) {
+                                      const stats = [
+                                        'HP',
+                                        'Attack',
+                                        'Defense',
+                                        'SpAtk',
+                                        'SpDef',
+                                        'Speed'
+                                      ];
+                                      if (value.toInt() < stats.length) {
+                                        return Text(
+                                          stats[value.toInt()],
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
                                   ),
                                 ),
                                 leftTitles: const AxisTitles(
-                                  sideTitles: SideTitles(showTitles: true),
+                                  sideTitles: SideTitles(
+                                      showTitles: true,
+                                      interval: 50,
+                                      reservedSize: 40,
+                                      maxIncluded: true),
                                 ),
                                 topTitles: const AxisTitles(
                                   sideTitles: SideTitles(showTitles: false),
@@ -126,6 +170,7 @@ class DataDialog extends StatelessWidget {
                                               BorderRadius.circular(8),
                                         ),
                                       ],
+                                      showingTooltipIndicators: [0],
                                     ),
                                   )
                                   .toList(),

@@ -95,8 +95,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(nameFormat('${favorite.name} ')),
+                                padding: const EdgeInsets.all(18.0),
+                                child: Text(nameFormat('${favorite.name} '),
+                                    style: TextStyle(fontSize: 20)),
                               ),
                               IconButton(
                                   onPressed: () async {

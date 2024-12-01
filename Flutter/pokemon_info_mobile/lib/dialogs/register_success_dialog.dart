@@ -6,7 +6,8 @@ class RegisterSuccessDialog {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Account Created'),
-        content: Text('Your account $user has been successfully created!'),
+        content: Text(
+            'Your account $user has been successfully created and logged in!'),
         actions: [
           TextButton(
             onPressed: () {

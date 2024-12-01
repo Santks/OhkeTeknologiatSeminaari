@@ -119,6 +119,12 @@ class AppState extends ChangeNotifier {
     _favList.removeWhere((favorite) => favorite.id == id);
     notifyListeners();
   }
+
+//Lazy solution to empy favorite list after logout
+  void clearUIfavorites() {
+    _favList = [];
+    notifyListeners();
+  }
 }
 
 class HomePage extends StatefulWidget {

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pokemon_info_mobile/main.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
     return Scaffold(
       appBar: AppBar(title: Text("Settings")),
       body: Column(
@@ -16,6 +19,7 @@ class SettingsPage extends StatelessWidget {
                 onPressed: () async {
                   if (FirebaseAuth.instance.currentUser != null) {
                     await FirebaseAuth.instance.signOut();
+                    appState.clearUIfavorites();
                     if (context.mounted) {
                       showDialog(
                           context: context,

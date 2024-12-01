@@ -62,7 +62,7 @@ export default function PokemonList() {
         } else {
             const userRef = ref(database, `users/${user.uid}`);
             push(userRef, item);
-            alert("Added to favourites!")
+            alert(`${textFormat(item.name)} added to favourites!`)
         }
     };
 
